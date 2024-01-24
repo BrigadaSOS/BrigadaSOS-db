@@ -47,9 +47,11 @@ api.use("*", async (req, res) => {
       if (!isProd) {
         template = fs.readFileSync(resolve("index.html"), "utf-8");
         template = await vite.transformIndexHtml(url, template);
+        console.log("ENTRA EN DEV");
         render = (await vite.ssrLoadModule("/src/entry-server.js")).render;
       } else {
         template = indexProd;
+        console.log("ENTRA ACA EN PROD");
         render = (await import("../../dist/server/entry-server.js")).render;
       }
 
