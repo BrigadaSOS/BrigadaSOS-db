@@ -2,14 +2,14 @@ import express, { Router } from "express";
 import serverless from "serverless-http";
 
 import { createServer } from "../../server";
-const api = express();
 
-const router = Router();
-router.get("/hello", (req, res) => res.send("Hello World!"));
 
-api.use("/api/", router);
+async function handler() {
+    const { app } = await createServer();
+    return serverless(app);
+}
 
-createServer().then(({ app }) =>
-    serverless(app)
-);
+export { handler };
+
+
 
