@@ -66,5 +66,5 @@ api.use("*", async (req, res) => {
     }
   });
 
-export const handler = serverless(api);
+  module.exports.handler = serverless(api);
 
