@@ -16,9 +16,6 @@ api.use('/', router)
 
 
 async function setupApi() {
-  const compression = (await import("compression")).default;
-  api.use(compression());
-
   const serveStatic = (await import("serve-static")).default;
   api.use("/", serveStatic(resolve("dist/client"), { index: false }));
 }
