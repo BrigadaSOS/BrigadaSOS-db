@@ -5,9 +5,9 @@
 
 [[redirects]]
   force = true
-  from = "/*"
+  from = "/api/*"
   status = 200
-  to = "/.server/entry-server"
+  to = "/.netlify/functions/api/:splat"
 
 [functions]
   external_node_modules = ["express"]
