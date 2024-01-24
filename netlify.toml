@@ -10,5 +10,5 @@
   to = "/.netlify/functions/api/:splat"
 
 [functions]
-  external_node_modules = ["express", "compression", "lightningcss"]
+  external_node_modules = ["express", "compression", "lightningcss", "esbuild"]
   node_bundler = "esbuild" 
