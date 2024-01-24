@@ -14,13 +14,17 @@ router.get('/hello', (req, res) => res.send('Hello World!'))
 
 api.use('/', router)
 
-api.use((await import("compression")).default());
-api.use(
-  "/",
-  (await import("serve-static")).default(resolve("dist/client"), {
-    index: false,
-  })
-);
+
+async function setupApi() {
+  const compression = (await import("compression")).default;
+  api.use(compression());
+
+  const serveStatic = (await import("serve-static")).default;
+  api.use("/", serveStatic(resolve("dist/client"), { index: false }));
+}
+
+setupApi();
+
 
 api.use('*', async (req, res) => {
   
