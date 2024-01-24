@@ -1,60 +1,70 @@
-import express, { Router } from 'express'
-import serverless from 'serverless-http'
-import fs from 'node:fs'
-import path from 'node:path'
+import express, { Router } from "express";
+import serverless from "serverless-http";
+import fs from "node:fs";
+import path from "node:path";
 
-import { createServer } from '../../server'
-const api = express()
+const api = express();
 
-const router = Router()
-const __dirname = require('path').dirname(__filename)
-const resolve = (p) => path.resolve(__dirname, p)
+const isProd = process.env.NODE_ENV === "production"
+let   root = process.cwd()
 
-router.get('/hello', (req, res) => res.send('Hello World!'))
+const __dirname = require('path').dirname(__filename);
+const resolve = (p) => path.resolve(__dirname, p);
 
-api.use('/', router)
+const indexProd = isProd
+  ? fs.readFileSync(resolve("dist/client/index.html"), "utf-8")
+  : "";
+
+const manifest = isProd
+  ? JSON.parse(
+    fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
+  )
+  : {};
 
 
-async function setupApi() {
-  const serveStatic = (await import("serve-static")).default;
-  api.use("/", serveStatic(resolve("dist/client"), { index: false }));
+let vite;
+if (!isProd) {
+  vite = await (
+    await import("vite")
+  )
+  api.use(vite.middlewares);
+} else {
+  api.use(
+    "/",
+    (await import("serve-static")).default(resolve("dist/client"), {
+      index: false,
+    })
+  );
 }
 
-setupApi();
 
+api.use("*", async (req, res) => {
+    try {
+      const url = req.originalUrl;
 
-api.use('*', async (req, res) => {
-  
-  /**
-   * @type {import('vite').ViteDevServer}
-   */
-  let vite;
-  vite = await (
-    await import("vite"))
-  try {
-    
-    const url = req.originalUrl
+      let template, render;
+      if (!isProd) {
+        template = fs.readFileSync(resolve("index.html"), "utf-8");
+        template = await vite.transformIndexHtml(url, template);
+        render = (await vite.ssrLoadModule("/src/entry-server.js")).render;
+      } else {
+        template = indexProd;
+        render = (await import("../../dist/server/entry-server.js")).render;
+      }
 
+      const [appHtml, preloadLinks] = await render(url, manifest);
 
+      const html = template
+        .replace(`<!--preload-links-->`, preloadLinks)
+        .replace(`<!--app-html-->`, appHtml);
 
-    let template, render
-    const indexProd = fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    } catch (e) {
+      vite && vite.ssrFixStacktrace(e);
+      console.log(e.stack);
+      res.status(500).end(e.stack);
+    }
+  });
 
-    template = indexProd
-    render = (await import('./dist/server/entry-server.js')).render
+export const handler = serverless(api);
 
-    const manifest = JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
-
-    const [appHtml, preloadLinks] = await render(url, manifest)
-
-    const html = template.replace(`<!--preload-links-->`, preloadLinks).replace(`<!--app-html-->`, appHtml)
-
-    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
-  } catch (e) {
-    vite && vite.ssrFixStacktrace(e)
-    console.log(e.stack)
-    res.status(500).end(e.stack)
-  }
-})
-
-export const handler = serverless(api)
