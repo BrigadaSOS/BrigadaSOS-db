@@ -10,7 +10,7 @@ export async function createServer(
   isProd = process.env.NODE_ENV === "production",
   hmrPort
 ) {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const __dirname = path.dirname(fileURLToPath(new URL(import.meta.url)));
   const resolve = (p) => path.resolve(__dirname, p);
 
   const indexProd = isProd
