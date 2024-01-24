@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server",
-    "build": "npm install && npm run build:client && npm run build:server",
+    "build": "npm run build:client && npm run build:server",
     "build:noExternal": "npm run build:client && npm run build:server:noExternal",
     "build:client": "vite build --ssrManifest --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
@@ -38,7 +38,9 @@
     "vue-router": "^4.2.0",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-google-login": "^2.0.18",
-    "vue3-popper": "^1.5.0"
+    "vue3-popper": "^1.5.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
