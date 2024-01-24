@@ -22,7 +22,7 @@ export const userStore = defineStore('user', {
   }),
   persist: {
     key: 'info',
-    storage: window.localStorage,
+    storage: typeof window !== 'undefined' ? window.localStorage : null,
     paths: ['isLoggedIn', 'filterPreferences', 'userInfo']
   },
   actions: {

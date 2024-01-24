@@ -27,7 +27,7 @@ export const ankiStore = defineStore('anki', {
   }),
   persist: {
     key: 'settings',
-    storage: window.localStorage,
+    storage: typeof window !== 'undefined' ? window.localStorage : null,
     paths: ['ankiPreferences']
   },
   actions: {

@@ -4,11 +4,13 @@ import { initFlowbite } from 'flowbite'
 
 export default {
   created() {
-    const savedLanguage = localStorage.getItem('language')
+    const savedLanguage = typeof window !== 'undefined' ? localStorage.getItem('language') : null;
     if (savedLanguage) {
       this.$i18n.locale = savedLanguage
     }
-    initFlowbite()
+    if(typeof window !== 'undefined'){
+      initFlowbite()
+    }
   }
 }
 </script>

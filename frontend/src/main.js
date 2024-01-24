@@ -1,13 +1,10 @@
-import('preline')
+if (typeof window !== 'undefined') {
+  import('preline')
+}
+
 import "vue-toastification/dist/index.css";
 
 import './assets/main.css'
-
-import { createHead } from '@unhead/vue'
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { createI18n } from 'vue-i18n'
-import { getStartingLocale } from './utils/i18n'
 
 import App from './App.vue'
 import router from './router'
@@ -15,8 +12,11 @@ import Toast from "vue-toastification";
 import vue3GoogleLogin from 'vue3-google-login'
 import messages from '@intlify/unplugin-vue-i18n/messages'
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-
-const pinia = createPinia();
+import { createSSRApp } from 'vue'
+import { createI18n } from "vue-i18n";
+import { createPinia } from "pinia";
+import { createHead } from '@unhead/vue'
+import { getStartingLocale } from './utils/i18n'
 
 // Language Configuration
 export const i18n = createI18n({
@@ -28,26 +28,29 @@ export const i18n = createI18n({
   messages
 })
 
-const app = createApp(App)
-const head = createHead()
+export function createApp() {
+  const app = createSSRApp(App);
+  const pinia = createPinia();
+  const head = createHead()
+  app.use(pinia)
+  app.use(router)
+  app.use(Toast, options_toast)
+  app.use(vue3GoogleLogin, {
+    clientId: '467066531682-q8p3ve3pc59cqnfjqn9vftpbmplclum3.apps.googleusercontent.com'
+  })
+  app.use(i18n)
+  app.use(head)
+  if (typeof window !== 'undefined') {
+    //Very important to only do this client-side, to avoid localStorage being undefined during ssg-build.
+    // Use the 'piniaPluginPersistedstate' for state persistence in Pinia stores.
+    pinia.use(piniaPluginPersistedstate)
+  }
 
-document.documentElement.classList.add('dark')
+  return { app, router };
+}
 
 const options_toast = {
   transition: "Vue-Toastification__fade",
   maxToasts: 3,
   newestOnTop: true,
 }
-
-pinia.use(piniaPluginPersistedstate);
-
-app.use(head)
-app.use(pinia)
-app.use(router)
-app.use(i18n)
-app.use(Toast, options_toast)
-app.use(vue3GoogleLogin, {
-  clientId: '467066531682-q8p3ve3pc59cqnfjqn9vftpbmplclum3.apps.googleusercontent.com'
-})
-
-app.mount('#app')
