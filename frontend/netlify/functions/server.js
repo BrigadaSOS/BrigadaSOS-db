@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 
 const isTest = process.env.VITEST
+const app = express()
 
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -12,8 +13,6 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
   const indexProd = isProd ? fs.readFileSync(resolve('client/index.html'), 'utf-8') : ''
 
   const manifest = isProd ? JSON.parse(fs.readFileSync(resolve('client/.vite/ssr-manifest.json'), 'utf-8')) : {}
-
-  const app = express()
 
   /**
    * @type {import('vite').ViteDevServer}
@@ -74,6 +73,7 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
       res.status(500).end(e.stack)
     }
   })
+  
   return { app, vite }
 }
 
@@ -84,3 +84,6 @@ if (!isTest) {
     })
   )
 }
+
+
+export const handler = serverless(app);
