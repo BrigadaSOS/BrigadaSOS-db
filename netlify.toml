@@ -1,5 +1,5 @@
 [build]
-  command = "npm run generate"
+  command = "npm run build && npm run serve"
   publish="dist"
   base = "frontend"
 
@@ -11,4 +11,4 @@
 [functions]
   external_node_modules = ["express", "compression", "lightningcss", "esbuild"]
   node_bundler = "esbuild" 
-  included_files = ["dist/**"]
+  included_files = ["../../dist/**"]
