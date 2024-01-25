@@ -1,22 +1,21 @@
 if (typeof window !== 'undefined') {
   import('preline')
 }
-
 import "vue-toastification/dist/index.css";
-
 import './assets/main.css'
 
 import App from './App.vue'
 import router from './router'
 import Toast from "vue-toastification";
 import vue3GoogleLogin from 'vue3-google-login'
-import messages from '@intlify/unplugin-vue-i18n/messages'
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createSSRApp } from 'vue'
 import { createI18n } from "vue-i18n";
 import { createPinia } from "pinia";
 import { createHead } from '@unhead/vue'
 import { getStartingLocale } from './utils/i18n'
+import enLocale from './locales/en.json';
+import esLocale from './locales/es.json';
 
 // Language Configuration
 export const i18n = createI18n({
@@ -24,8 +23,11 @@ export const i18n = createI18n({
   globalInjection: true,
   locale: getStartingLocale(),
   fallbackLocale: 'en',
-  availableLocales: ['es', 'en'],
-  messages
+  messages: {
+    en: enLocale,
+    es: esLocale,
+  },
+  availableLocales: ['es', 'en']
 })
 
 export function createApp() {

@@ -2,7 +2,9 @@
 import { ref, nextTick, computed } from 'vue'
 import { mdiFileVideo, mdiVideoBox } from '@mdi/js'
 import { useI18n } from 'vue-i18n'
-import { useToast } from 'vue-toastification'
+import * as Toast from "vue-toastification/dist/index.mjs"
+const { useToast } = Toast
+
 import { normalizeSentence } from '../utils/misc'
 
 const { t, locale } = useI18n()

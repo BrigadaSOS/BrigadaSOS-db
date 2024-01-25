@@ -9,7 +9,10 @@ import {
   mdiRefresh,
   mdiFileVideo
 } from '@mdi/js'
-import { useToast } from 'vue-toastification'
+
+import * as Toast from "vue-toastification/dist/index.mjs"
+const { useToast } = Toast
+
 import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 import { normalizeSentence } from '../utils/misc'

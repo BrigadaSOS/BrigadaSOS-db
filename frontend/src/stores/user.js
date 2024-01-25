@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import router from '../router/index'
-import { useToast } from 'vue-toastification'
+import * as Toast from "vue-toastification/dist/index.mjs"
+const { useToast } = Toast
 import { i18n } from '../main' 
 
 const toast = useToast()

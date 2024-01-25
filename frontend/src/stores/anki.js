@@ -1,14 +1,7 @@
 import { defineStore } from 'pinia'
 import router from '../router/index'
-import { useToast } from 'vue-toastification'
 import { i18n } from '../main'
 
-const toast = useToast()
-
-const options = {
-  timeout: 3000,
-  position: 'bottom-right'
-}
 
 export const ankiStore = defineStore('anki', {
   state: () => ({

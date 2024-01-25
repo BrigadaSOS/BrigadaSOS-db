@@ -25,5 +25,6 @@ module.exports = {
     }
   },
   plugins: [require('flowbite/plugin'), require('preline/plugin')],
-  darkMode: 'class'
+  darkMode: 'class',
+  ssr: true
 }
