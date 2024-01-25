@@ -5,12 +5,7 @@
 
 [[redirects]]
   from = "/*"
-  to = "/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/*"
-  to = "/server"
+  to = "/.netlify/functions/server"
   status = 200
   
 [functions]
