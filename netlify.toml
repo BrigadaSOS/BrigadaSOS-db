@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && npm run serve"
   publish="dist"
   base = "frontend"
 
@@ -7,7 +7,6 @@
   force = true
   from = "/*"
   status = 200
-  to = "/.netlify/functions/api/:splat"
 
 [functions]
   external_node_modules = ["express", "compression", "lightningcss", "esbuild"]
