@@ -7,11 +7,25 @@ import serverless from "serverless-http";
 const isTest = process.env.VITEST
 const app = express()
 
+function listDirectoryContents(directory) {
+  fs.readdir(directory, (err, files) => {
+      if (err) {
+          console.error('Error al leer el directorio:', err);
+          return;
+      }
+      files.forEach(file => {
+          console.log(file);
+      });
+  });
+}
+
+
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
   console.log('Current directory: ' + process.cwd());
+  listDirectoryContents('.');
 
   
-  const indexProd = isProd ? fs.readFileSync(('/client/index.html'), 'utf-8') : ''
+  const indexProd = isProd ? fs.readFileSync(('../client/index.html'), 'utf-8') : ''
 
   const manifest = isProd ? JSON.parse(fs.readFileSync(('/client/.vite/ssr-manifest.json'), 'utf-8')) : {}
 
