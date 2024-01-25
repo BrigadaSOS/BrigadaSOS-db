@@ -19,11 +19,37 @@ function listDirectoryContents(directory) {
   });
 }
 
+function listSubdirectories(dir, depth, currentLevel = 0) {
+  if (currentLevel > depth) return;
+
+  let files;
+  try {
+      files = fs.readdirSync(dir);
+  } catch (err) {
+      console.error(`Error leyendo el directorio ${dir}:`, err);
+      return;
+  }
+
+  files.forEach(file => {
+      let fullPath = path.join(dir, file);
+      try {
+          if (fs.statSync(fullPath).isDirectory()) {
+              console.log(' '.repeat(currentLevel * 2) + file);
+              listSubdirectories(fullPath, depth, currentLevel + 1);
+          }
+      } catch (err) {
+          console.error(`Error accediendo a ${fullPath}:`, err);
+      }
+  });
+}
+
+
 
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
   console.log('Current directory: ' + process.cwd());
   // ./frontend/netlify/
-  listDirectoryContents('../../');
+  //listDirectoryContents('../../');
+  listSubdirectories('../../', 3);
 
   
   const indexProd = isProd ? fs.readFileSync(('../client/index.html'), 'utf-8') : ''
