@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build && npm run serve"
+  command = "npm run build"
   publish="dist"
   base = "frontend"
 
