@@ -11,3 +11,4 @@
 [functions]
   external_node_modules = ["express", "compression", "lightningcss", "esbuild"]
   node_bundler = "esbuild" 
+  included_files = ["../../dist/**"]
