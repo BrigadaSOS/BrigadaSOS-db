@@ -8,12 +8,11 @@ const isTest = process.env.VITEST
 const app = express()
 
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
-  const __dirname = require('path').dirname(__filename);
-  const resolve = (p) => path.resolve(__dirname, p);
-  
-  const indexProd = isProd ? fs.readFileSync(resolve('client/index.html'), 'utf-8') : ''
 
-  const manifest = isProd ? JSON.parse(fs.readFileSync(resolve('client/.vite/ssr-manifest.json'), 'utf-8')) : {}
+  
+  const indexProd = isProd ? fs.readFileSync(('client/index.html'), 'utf-8') : ''
+
+  const manifest = isProd ? JSON.parse(fs.readFileSync(('client/.vite/ssr-manifest.json'), 'utf-8')) : {}
 
   /**
    * @type {import('vite').ViteDevServer}
