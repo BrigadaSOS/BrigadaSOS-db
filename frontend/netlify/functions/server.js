@@ -49,7 +49,7 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
   console.log('Current directory: ' + process.cwd());
   // ./frontend/netlify/
   //listDirectoryContents('../../');
-  listDirectoryContents('./frontend/netlify');
+  listDirectoryContents('./frontend/netlify/functions');
 
   
   const indexProd = isProd ? fs.readFileSync(('../client/index.html'), 'utf-8') : ''
