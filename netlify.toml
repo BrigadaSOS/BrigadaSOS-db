@@ -1,13 +1,18 @@
 [build]
-  command = "npm run build && npm run serve"
+  command = "npm run build"
   publish="dist"
   base = "frontend"
 
 [[redirects]]
-  force = true
   from = "/*"
+  to = "/:splat"
   status = 200
 
+[[redirects]]
+  from = "/*"
+  to = "/server"
+  status = 200
+  
 [functions]
   external_node_modules = ["express", "compression", "lightningcss", "esbuild"]
   node_bundler = "esbuild" 
