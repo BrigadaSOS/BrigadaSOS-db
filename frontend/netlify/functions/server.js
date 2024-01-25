@@ -10,9 +10,9 @@ const app = express()
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
 
   
-  const indexProd = isProd ? fs.readFileSync(('./client/index.html'), 'utf-8') : ''
+  const indexProd = isProd ? fs.readFileSync(('/client/index.html'), 'utf-8') : ''
 
-  const manifest = isProd ? JSON.parse(fs.readFileSync(('./client/.vite/ssr-manifest.json'), 'utf-8')) : {}
+  const manifest = isProd ? JSON.parse(fs.readFileSync(('/client/.vite/ssr-manifest.json'), 'utf-8')) : {}
 
   /**
    * @type {import('vite').ViteDevServer}
@@ -42,7 +42,7 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
     app.use((await import('compression')).default())
     app.use(
       '/',
-      (await import('serve-static')).default(resolve('./client'), {
+      (await import('serve-static')).default(resolve('/client'), {
         index: false
       })
     )
