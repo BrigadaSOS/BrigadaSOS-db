@@ -22,7 +22,7 @@ function listDirectoryContents(directory) {
 
 export async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV !== 'production', hmrPort) {
   console.log('Current directory: ' + process.cwd());
-  listDirectoryContents('./frontend');
+  listDirectoryContents('./frontend/netlify');
 
   
   const indexProd = isProd ? fs.readFileSync(('../client/index.html'), 'utf-8') : ''
